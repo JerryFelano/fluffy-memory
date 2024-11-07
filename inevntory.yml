@@ -1,0 +1,11 @@
+all:
+  children:
+    internal_test:
+      hosts:
+        my_virt:
+          ansible_host: 192.168.100.101
+          ansible_user: mickey
+          ansible_password: please
+          ansible_connection: winrm
+          ansible_winrm_server_cert_validation: ignore
+        

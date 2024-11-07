@@ -1,0 +1,5 @@
+oscript_version : "1.9.2"
+online_update : false
+oscript_version_dir : "{{ oscript_version | replace('.', '_') }}"
+dest_dir : "C:\\temp\\{{ oscript_version_dir }}\\OneScript-{{ oscript_version }}.exe"
+installer_path: "roles/oscript/files/{{ oscript_version_dir }}/OneScript-{{ oscript_version }}.exe"

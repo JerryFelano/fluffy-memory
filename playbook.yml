@@ -1,0 +1,7 @@
+- name: Central update starter
+  hosts: 
+    - internal_test
+    # - external_test
+  roles: 
+    - oscript
+    

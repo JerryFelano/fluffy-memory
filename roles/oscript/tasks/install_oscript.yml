@@ -1,0 +1,35 @@
+- name: Check updates...
+  block:
+    - name: Local version is equial
+      ansible.builtin.debug:
+        msg: "Installed version: {{ local_latest_version.stdout }}"
+    - name: Stop update oscript
+      ansible.builtin.meta:
+        stop
+  when: local_latest_version.stdout | regex_search('(\d+\.\d+\.\d+)') == oscript_version 
+
+- name: Getting distr...
+  block:
+    - name: Download oscript installer for Windows...
+      ansible.windows.win_get_url :
+        url: "https://oscript.io/downloads/{{ oscript_version_dir }}/x64/OneScript-{{ oscript_version }}-x64.exe"
+        dest: dest_dir
+      when: online_update
+
+    - name: Copy installer from master... 
+      ansible.ansible.windows.win_copy :
+        src : installer_path
+        dest: dest_dir
+      when: not online_update
+
+- name: Installing...
+  ansible.builtin.win_shell: 
+    Start-Process -FilePath "{{ dest_dir }}" -ArgumentList "/S" -Wait
+
+- name: Verifying...
+  ansible.builtin.win_command: oscript -v
+  register: oscript_version
+
+- name: Show installed version
+  ansible.builtin.debug:
+    msg: "Installed version: {{ oscript_version.stdout }}"
